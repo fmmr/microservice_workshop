@@ -1,5 +1,7 @@
 package com.microservices.rentaloffer;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,13 +47,9 @@ public class Membership implements MessageHandler {
         }
 
 
-        final boolean present = needPacket.getSolutions()
-                                          .stream()
-                                          .filter(s -> s.getType() == SolutionType.JOIN)
-                                          .findFirst()
-                                          .isPresent();
+        needPacket.getSolutions().size();
 
-        return !present;
+        return needPacket.getSolutions().size() == 0;
     }
 
     private Level getLevelForUser(String userid) {
