@@ -8,7 +8,6 @@ public class Need {
 
     private static List<String> userNames = Arrays.asList("Lotte", "Henning", "Nicolai", "Fredrik", null);
 
-
     public static void main(String[] args) {
         String host = args[0];
         String port = args[1];

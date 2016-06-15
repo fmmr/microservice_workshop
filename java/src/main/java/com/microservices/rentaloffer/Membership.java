@@ -19,6 +19,10 @@ public class Membership implements MessageHandler {
     public void handle(String message) {
         final NeedPacket needPacket = NeedPacket.fromJson(message);
 
+        if (needPacket.getReadCount() > 9) {
+            logger.error("Message read more than 9 times: " + needPacket);
+            return;
+        }
 
         if (shouldHandle(needPacket)) {
             final String userid = needPacket.getUserid();
@@ -28,6 +32,7 @@ public class Membership implements MessageHandler {
             } else {
                 needPacket.proposeSolution(new Solution(SolutionType.JOIN, 500, 0.3));
             }
+            needPacket.increaseReadCount();
             connection.publish(needPacket.toJson("Membership"));
         }
     }
