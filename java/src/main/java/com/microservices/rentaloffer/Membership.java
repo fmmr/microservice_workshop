@@ -18,25 +18,48 @@ public class Membership implements MessageHandler {
 
     public void handle(String message) {
         final NeedPacket needPacket = NeedPacket.fromJson(message);
+
+
+        if (shouldHandle(needPacket)) {
+            final String userid = needPacket.getUserid();
+            Level level = getLevelForUser(userid);
+            if (level != null) {
+                needPacket.setLevel(level);
+            } else {
+                needPacket.proposeSolution(new Solution(SolutionType.JOIN, 500, 0.3));
+            }
+            connection.publish(needPacket.toJson());
+        }
+    }
+
+    private boolean shouldHandle(NeedPacket needPacket) {
+        final boolean hasLevel = needPacket.getLevel() != null;
         final String userid = needPacket.getUserid();
-        Level level = getLevelForUser(userid);
-        if (level != null){
-            needPacket.setLevel(level);
+
+        if (hasLevel) {
+            return false;
         }
-        else{
-            needPacket.proposeSolution(new Solution(SolutionType.JOIN, 500, 0.3));
+
+        if (userid == null) {
+            return false;
         }
-        connection.publish(needPacket.toJson());
+
+
+        final boolean present = needPacket.getSolutions()
+                                          .stream()
+                                          .filter(s -> s.getType() == SolutionType.JOIN)
+                                          .findFirst()
+                                          .isPresent();
+
+        return !present;
     }
 
     private Level getLevelForUser(String userid) {
-        if ("Lotte".equals(userid)){
+        if ("Lotte".equals(userid)) {
             return Level.PLATINUM;
-        }
-        else if("Henning".equals(userid)){
+        } else if ("Henning".equals(userid)) {
             return Level.GOLD;
-        }
-        else if ("Fredrik".equals(userid)){
+        } else if ("Fredrik".equals(userid)) {
             return Level.SILVER;
         }
         return null;
