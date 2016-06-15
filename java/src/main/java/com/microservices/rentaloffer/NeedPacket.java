@@ -13,6 +13,7 @@ public class NeedPacket {
     private String id;
     private String userid;
     private Level level;
+    private List<String> signs = new ArrayList<>();
 
     public NeedPacket() {
         id = IDProvider.getId();
@@ -21,7 +22,8 @@ public class NeedPacket {
     public static final String NEED = "car_rental_offer";
     private final List<Solution> solutions = new ArrayList<>();
 
-    public String toJson() {
+    public String toJson(String sign) {
+        signs.add(sign);
         Map<String, Object> message = new HashMap<>();
         message.put("json_class", NeedPacket.class.getName());
         message.put("need", NEED);
@@ -29,6 +31,7 @@ public class NeedPacket {
         message.put("level", level);
         message.put("userid", userid);
         message.put("solutions", solutions);
+        message.put("signs", signs);
         return new Gson().toJson(message);
     }
 

@@ -1,6 +1,5 @@
 package com.microservices.rentaloffer;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -22,7 +21,7 @@ public abstract class SolutionProvider implements MessageHandler {
         if (shouldProvideNewSolution(needPacket)) {
             Optional<Level> level = Optional.ofNullable(needPacket.getLevel());
             needPacket.proposeSolution(new Solution(getType(), getValue(level), getLikelyhood(level)));
-            connection.publish(needPacket.toJson());
+            connection.publish(needPacket.toJson(getType().toString()));
         }
     }
 

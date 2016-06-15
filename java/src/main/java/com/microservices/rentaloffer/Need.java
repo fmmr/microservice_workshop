@@ -1,6 +1,5 @@
 package com.microservices.rentaloffer;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -23,7 +22,7 @@ public class Need {
                 int rnd = new Random().nextInt(userNames.size());
                 NeedPacket needPacket = new NeedPacket();
                 needPacket.setUserid(userNames.get(rnd));
-                connection.publish(needPacket.toJson());
+                connection.publish(needPacket.toJson("Need"));
                 Thread.sleep(5000);
             }
         } catch (Exception e) {

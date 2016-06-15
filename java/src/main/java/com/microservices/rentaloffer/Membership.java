@@ -1,7 +1,5 @@
 package com.microservices.rentaloffer;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +28,7 @@ public class Membership implements MessageHandler {
             } else {
                 needPacket.proposeSolution(new Solution(SolutionType.JOIN, 500, 0.3));
             }
-            connection.publish(needPacket.toJson());
+            connection.publish(needPacket.toJson("Membership"));
         }
     }
 
