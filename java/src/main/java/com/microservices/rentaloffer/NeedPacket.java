@@ -40,7 +40,8 @@ public class NeedPacket {
         return level;
     }
 
-    
+
+
     public static NeedPacket fromJson(String json) {
         return new Gson().fromJson(json, NeedPacket.class);
     }
