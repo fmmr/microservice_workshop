@@ -33,9 +33,7 @@ public abstract class SolutionProvider implements MessageHandler {
     abstract int getValue(Optional<Level> level);
 
     private boolean shouldProvideNewSolution(NeedPacket needPacket) {
-        final List<Solution> solutions = needPacket.getSolutions();
-        final boolean present = solutions.stream().filter(s -> s.getType() == getType()).findFirst().isPresent();
-        return !present;
+        return needPacket.getSolutions().size() == 0;
     }
 
 }
