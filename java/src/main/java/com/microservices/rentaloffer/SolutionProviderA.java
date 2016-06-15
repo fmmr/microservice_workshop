@@ -1,6 +1,6 @@
 package com.microservices.rentaloffer;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,6 @@ public class SolutionProviderA extends SolutionProvider {
 
         Connections connection = new Connections(host, port);
         connection.deliveryLoop(new SolutionProviderA(connection));
-
     }
 
 
@@ -29,12 +28,30 @@ public class SolutionProviderA extends SolutionProvider {
     }
 
     @Override
-    double getLikelyhood() {
-        return 0.5;
+    double getLikelyhood(Optional<Level> level) {
+        if (level.isPresent()) {
+            if (level.get() == Level.SILVER) {
+                return 0.5;
+            } else if (level.get() == Level.GOLD) {
+                return 0.8;
+            } else if (level.get() == Level.PLATINUM) {
+                return 0.8;
+            }
+        }
+        return 0.1;
     }
 
     @Override
-    int getValue() {
-        return 4;
+    int getValue(Optional<Level> level) {
+        if (level.isPresent()) {
+            if (level.get() == Level.SILVER) {
+                return 6;
+            } else if (level.get() == Level.GOLD) {
+                return 6;
+            } else if (level.get() == Level.PLATINUM) {
+                return 12;
+            }
+        }
+        return 3;
     }
 }

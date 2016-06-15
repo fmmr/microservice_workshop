@@ -20,16 +20,17 @@ public abstract class SolutionProvider implements MessageHandler {
         final NeedPacket needPacket = NeedPacket.fromJson(message);
 
         if (shouldProvideNewSolution(needPacket)) {
-            needPacket.proposeSolution(new Solution(getType(), getValue(), getLikelyhood()));
+            Optional<Level> level = Optional.of(needPacket.getLevel());
+            needPacket.proposeSolution(new Solution(getType(), getValue(level), getLikelyhood(level)));
             connection.publish(needPacket.toJson());
         }
     }
 
     abstract SolutionType getType();
     
-    abstract double getLikelyhood();
+    abstract double getLikelyhood(Optional<Level> level);
 
-    abstract int getValue();
+    abstract int getValue(Optional<Level> level);
 
     private boolean shouldProvideNewSolution(NeedPacket needPacket) {
         final List<Solution> solutions = needPacket.getSolutions();
