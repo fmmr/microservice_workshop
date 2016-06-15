@@ -40,19 +40,15 @@ public class SolutionCollector implements MessageHandler {
     }
 
     private Solution getBest(List<Solution> solutions) {
-        double highestScore = 0;
-        Solution bestSolution = null;
+        return solutions.stream()
+                .max(this::bestComparator)
+                .orElseThrow(() -> new RuntimeException("Should be a solution"));
+    }
 
-        for (Solution solution : solutions) {
-            double score = solution.getValue() * solution.getLikelyhood();
-            if (score > highestScore) {
-                highestScore = score;
-                bestSolution = solution;
-            }
-        }
-
-        return bestSolution;
-
+    private int bestComparator(Solution solution, Solution solution1) {
+        double score = solution.getLikelyhood() * solution.getValue();
+        double score1 = solution1.getLikelyhood() * solution1.getValue();
+        return Double.compare(score, score1);
     }
 
 }
