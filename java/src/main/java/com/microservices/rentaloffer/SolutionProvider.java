@@ -26,8 +26,13 @@ public abstract class SolutionProvider implements MessageHandler {
             Optional<Level> level = Optional.ofNullable(needPacket.getLevel());
             needPacket.proposeSolution(new Solution(getType(), getValue(level), getLikelyhood(level)));
             needPacket.increaseReadCount();
-            connection.publish(needPacket.toJson(getType().toString()));
+            connection.publish(needPacket.toJson(sign()));
         }
+    }
+
+    @Override
+    public String sign() {
+        return getType().toString();
     }
 
     abstract SolutionType getType();

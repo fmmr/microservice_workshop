@@ -19,4 +19,8 @@ public class Monitor implements MessageHandler {
         logger.info(String.format(" [x] Received: %s", message));
     }
 
+    @Override
+    public String sign() {
+        return "monitor";
+    }
 }

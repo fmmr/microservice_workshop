@@ -66,4 +66,8 @@ public class SolutionCollector implements MessageHandler {
         return Double.compare(score, score1);
     }
 
+    @Override
+    public String sign() {
+        return "solcol";
+    }
 }

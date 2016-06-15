@@ -33,8 +33,13 @@ public class Membership implements MessageHandler {
                 needPacket.proposeSolution(new Solution(SolutionType.JOIN, 500, 0.3));
             }
             needPacket.increaseReadCount();
-            connection.publish(needPacket.toJson("Membership"));
+            connection.publish(needPacket.toJson(sign()));
         }
+    }
+
+    @Override
+    public String sign() {
+        return "Membership";
     }
 
     private boolean shouldHandle(NeedPacket needPacket) {
