@@ -23,6 +23,7 @@ public abstract class SolutionProvider implements MessageHandler {
             final PingPacket pingPacket = PingPacket.fromJson(message);
             if (pingPacket.hasNoReplies()) {
                 pingPacket.increaseReadCount();
+                pingPacket.addReply(new Reply(sign()));
                 connection.publish(pingPacket.toJson(sign()));
             }
         } else {

@@ -35,6 +35,7 @@ public class SolutionCollector implements MessageHandler {
             final PingPacket pingPacket = PingPacket.fromJson(message);
             if (pingPacket.hasNoReplies()) {
                 pingPacket.increaseReadCount();
+                pingPacket.addReply(new Reply(sign()));
                 connection.publish(pingPacket.toJson(sign()));
             }
         } else {
