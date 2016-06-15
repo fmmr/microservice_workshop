@@ -14,6 +14,7 @@ public class NeedPacket {
     private String userid;
     private Level level;
     private List<String> signs = new ArrayList<>();
+    private int readCount = 0;
 
     public NeedPacket() {
         id = IDProvider.getId();
@@ -30,6 +31,7 @@ public class NeedPacket {
         message.put("id", id);
         message.put("level", level);
         message.put("userid", userid);
+        message.put("readCount", readCount);
         message.put("solutions", solutions);
         message.put("signs", signs);
         return new Gson().toJson(message);
@@ -43,7 +45,13 @@ public class NeedPacket {
         return level;
     }
 
+    public int getReadCount() {
+        return readCount;
+    }
 
+    public void increaseReadCount() {
+        readCount++;
+    }
 
     public static NeedPacket fromJson(String json) {
         return new Gson().fromJson(json, NeedPacket.class);

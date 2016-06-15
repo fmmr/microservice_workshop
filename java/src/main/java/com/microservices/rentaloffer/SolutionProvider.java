@@ -17,10 +17,15 @@ public abstract class SolutionProvider implements MessageHandler {
 
     public void handle(String message) {
         final NeedPacket needPacket = NeedPacket.fromJson(message);
+        if (needPacket.getReadCount() > 9) {
+            logger.error("Need packet read more than 9 times: " + needPacket);
+            return;
+        }
 
         if (shouldProvideNewSolution(needPacket)) {
             Optional<Level> level = Optional.ofNullable(needPacket.getLevel());
             needPacket.proposeSolution(new Solution(getType(), getValue(level), getLikelyhood(level)));
+            needPacket.increaseReadCount();
             connection.publish(needPacket.toJson(getType().toString()));
         }
     }
