@@ -60,4 +60,12 @@ public class NeedPacket {
     public List<Solution> getSolutions() {
         return solutions;
     }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
 }
