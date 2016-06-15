@@ -3,6 +3,7 @@ package com.microservices.rentaloffer;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +30,11 @@ public class SolutionCollector implements MessageHandler {
 
 
             final String scoreInString = formatter.format(score);
-
-            logger.info("BEST of (" + solutions.size() + "), score: " + scoreInString + ": " + solution.toJson());
+            final String collect = solutions.stream()
+                                            .map(s -> s.getLikelyhood() * s.getValue())
+                                            .map(formatter::format)
+                                            .collect(Collectors.joining(", "));
+            logger.info("BEST of (" + solutions.size() + "), score: " + scoreInString + " of [" + collect + "]: " + solution.toJson());
 
         }
     }
