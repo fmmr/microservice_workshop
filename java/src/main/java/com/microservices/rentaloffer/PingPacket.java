@@ -63,11 +63,11 @@ public class PingPacket {
         replies.add(reply);
     }
 
-    public boolean hasNoSolutions() {
+    public boolean hasNoReplies() {
         return replies.size() == 0;
     }
 
-    public boolean hasSolutions() {
+    public boolean hasReplies() {
         return replies.size() > 0;
     }
 
