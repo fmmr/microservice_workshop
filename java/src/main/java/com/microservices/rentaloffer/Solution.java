@@ -41,4 +41,12 @@ public class Solution {
     public SolutionType getType() {
         return type;
     }
+
+    public double getLikelyhood() {
+        return likelyhood;
+    }
+
+    public long getValue() {
+        return value;
+    }
 }

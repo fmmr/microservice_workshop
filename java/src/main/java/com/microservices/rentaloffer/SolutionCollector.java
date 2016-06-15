@@ -22,13 +22,25 @@ public class SolutionCollector implements MessageHandler {
         if (needPacket.hasSolutions()) {
             List<Solution> solutions = needPacket.getSolutions();
             Solution solution = getBest(solutions);
-            logger.info("BEST: " + solution);
+            logger.info("BEST: " + solution.toJson());
 
         }
     }
 
     private Solution getBest(List<Solution> solutions) {
-        return solutions.get(0); // TODO implement
+        double highestScore = 0;
+        Solution bestSolution = null;
+
+        for (Solution solution : solutions) {
+            double score = solution.getValue() * solution.getLikelyhood();
+            if (score > highestScore) {
+                highestScore = score;
+                bestSolution = solution;
+            }
+        }
+
+        return bestSolution;
+
     }
 
 }
