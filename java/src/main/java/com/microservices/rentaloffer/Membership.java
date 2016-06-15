@@ -21,8 +21,10 @@ public class Membership implements MessageHandler {
     public void handle(String message) {
         if (isPingPacket(message)) {
             final PingPacket pingPacket = PingPacket.fromJson(message);
-            pingPacket.increaseReadCount();
-            connection.publish(pingPacket.toJson(sign()));
+            if (pingPacket.hasNoReplies()) {
+                pingPacket.increaseReadCount();
+                connection.publish(pingPacket.toJson(sign()));
+            }
         } else {
             final NeedPacket needPacket = NeedPacket.fromJson(message);
 

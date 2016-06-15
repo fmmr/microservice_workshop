@@ -21,8 +21,10 @@ public abstract class SolutionProvider implements MessageHandler {
         final NeedPacket needPacket = NeedPacket.fromJson(message);
         if (isPingPacket(message)) {
             final PingPacket pingPacket = PingPacket.fromJson(message);
-            pingPacket.increaseReadCount();
-            connection.publish(pingPacket.toJson(sign()));
+            if (pingPacket.hasNoReplies()) {
+                pingPacket.increaseReadCount();
+                connection.publish(pingPacket.toJson(sign()));
+            }
         } else {
             if (needPacket.getReadCount() > 9) {
                 logger.error("Need packet read more than 9 times: " + needPacket);
