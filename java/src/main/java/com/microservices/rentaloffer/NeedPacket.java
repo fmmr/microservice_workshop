@@ -25,6 +25,10 @@ public class NeedPacket {
 
     public String toJson(String sign) {
         signs.add(sign);
+        return toJson();
+    }
+
+    private String toJson() {
         Map<String, Object> message = new HashMap<>();
         message.put("json_class", NeedPacket.class.getName());
         message.put("need", NEED);
@@ -83,5 +87,10 @@ public class NeedPacket {
 
     public String getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return toJson();
     }
 }
