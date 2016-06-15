@@ -22,7 +22,7 @@ public class SolutionCollector implements MessageHandler {
         if (needPacket.hasSolutions()) {
             List<Solution> solutions = needPacket.getSolutions();
             Solution solution = getBest(solutions);
-            logger.info("BEST: " + solution.toJson());
+            logger.info("BEST of (" + solutions.size() + "): " + solution.toJson());
 
         }
     }
