@@ -3,9 +3,6 @@ package com.microservices.rentaloffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.microservices.rentaloffer.SolutionType.JOIN;
-import static sun.util.logging.LoggingSupport.getLevel;
-
 public class Membership implements MessageHandler {
 
     protected static Logger logger = LoggerFactory.getLogger(Membership.class);
@@ -27,7 +24,7 @@ public class Membership implements MessageHandler {
             needPacket.setLevel(level);
         }
         else{
-            needPacket.proposeSolution(new Solution(JOIN, 500, 0.3));
+            needPacket.proposeSolution(new Solution(SolutionType.JOIN, 500, 0.3));
         }
         connection.publish(needPacket.toJson());
     }
