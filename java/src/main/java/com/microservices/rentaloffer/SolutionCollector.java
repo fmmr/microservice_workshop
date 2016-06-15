@@ -34,7 +34,7 @@ public class SolutionCollector implements MessageHandler {
                                             .map(s -> s.getLikelyhood() * s.getValue())
                                             .map(formatter::format)
                                             .collect(Collectors.joining(", "));
-            logger.info("BEST of (" + solutions.size() + "), score: " + scoreInString + " of [" + collect + "]: " + solution.toJson());
+            logger.info("BEST of (" + solutions.size() + "), score: " + scoreInString + " of [" + collect + "]: " + solution);
 
         }
     }
