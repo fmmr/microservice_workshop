@@ -22,7 +22,8 @@ public class SolutionCollector implements MessageHandler {
         if (needPacket.hasSolutions()) {
             List<Solution> solutions = needPacket.getSolutions();
             Solution solution = getBest(solutions);
-            logger.info("BEST of (" + solutions.size() + "): " + solution.toJson());
+            double score = solution.getValue() * solution.getLikelyhood();
+            logger.info("BEST of (" + solutions.size() + "), score: " + score + ": " + solution.toJson());
 
         }
     }
