@@ -38,4 +38,7 @@ public class Solution {
         return new Gson().fromJson(json, Solution.class);
     }
 
+    public SolutionType getType() {
+        return type;
+    }
 }

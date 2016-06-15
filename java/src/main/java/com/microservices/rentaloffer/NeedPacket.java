@@ -41,6 +41,9 @@ public class NeedPacket {
     public boolean hasNoSolutions() {
         return solutions.size() == 0;
     }
+    public boolean hasSolutions() {
+        return solutions.size() > 0;
+    }
 
     public List<Solution> getSolutions() {
         return solutions;

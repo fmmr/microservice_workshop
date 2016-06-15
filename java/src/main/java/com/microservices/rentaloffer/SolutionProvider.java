@@ -1,5 +1,8 @@
 package com.microservices.rentaloffer;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,14 +22,16 @@ public class SolutionProvider implements MessageHandler {
     public void handle(String message) {
         final NeedPacket needPacket = NeedPacket.fromJson(message);
 
-        if (hasNoSolutionOfTypeA(needPacket)) {
+        if (shouldProvideNewSolution(needPacket)) {
             needPacket.proposeSolution(new Solution(SolutionType.A, 100, 0.5d));
             connection.publish(needPacket.toJson());
         }
     }
 
-    private boolean hasNoSolutionOfTypeA(NeedPacket needPacket) {
-        return needPacket.hasNoSolutions();
+    private boolean shouldProvideNewSolution(NeedPacket needPacket) {
+        final List<Solution> solutions = needPacket.getSolutions();
+        final boolean present = solutions.stream().filter(s -> s.getType() == SolutionType.A).findFirst().isPresent();
+        return !present;
     }
 
 }

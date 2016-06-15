@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public class SolutionCollector implements MessageHandler {
 
+    protected static Logger logger = LoggerFactory.getLogger(SolutionCollector.class);
 
     public static void main(String[] args) {
         String host = args[0];
@@ -18,9 +19,10 @@ public class SolutionCollector implements MessageHandler {
 
     public void handle(String message) {
         final NeedPacket needPacket = NeedPacket.fromJson(message);
-        if (!needPacket.hasNoSolutions()) {
+        if (needPacket.hasSolutions()) {
             List<Solution> solutions = needPacket.getSolutions();
             Solution solution = getBest(solutions);
+            logger.info("BEST: " + solution);
 
         }
     }
