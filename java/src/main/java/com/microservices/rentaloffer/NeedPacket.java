@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 
 public class NeedPacket {
     private String id;
+    private String userid;
 
     public NeedPacket() {
         id = IDProvider.getId();
@@ -25,6 +26,7 @@ public class NeedPacket {
         message.put("json_class", NeedPacket.class.getName());
         message.put("need", NEED);
         message.put("id", id);
+        message.put("userid", userid);
         message.put("solutions", solutions);
         return new Gson().toJson(message);
     }
