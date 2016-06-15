@@ -32,7 +32,15 @@ public class NeedPacket {
         return new Gson().toJson(message);
     }
 
+    public String getUserid() {
+        return userid;
+    }
 
+    public Level getLevel() {
+        return level;
+    }
+
+    
     public static NeedPacket fromJson(String json) {
         return new Gson().fromJson(json, NeedPacket.class);
     }
