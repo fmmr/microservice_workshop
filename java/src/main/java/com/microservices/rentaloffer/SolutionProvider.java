@@ -10,7 +10,11 @@ public abstract class SolutionProvider implements MessageHandler {
 
     protected static Logger logger = LoggerFactory.getLogger(SolutionProvider.class);
     private static Connections connection;
-    
+
+    public SolutionProvider(Connections connection) {
+        this.connection = connection;
+    }
+
 
     public void handle(String message) {
         final NeedPacket needPacket = NeedPacket.fromJson(message);

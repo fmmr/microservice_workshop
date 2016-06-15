@@ -8,14 +8,18 @@ import org.slf4j.LoggerFactory;
 public class SolutionProviderA extends SolutionProvider {
 
     protected static Logger logger = LoggerFactory.getLogger(SolutionProviderA.class);
-    private static Connections connection;
+
+    public SolutionProviderA(Connections connection) {
+        super(connection);
+    }
 
     public static void main(String[] args) {
         String host = args[0];
         String port = args[1];
 
-        connection = new Connections(host, port);
-        connection.deliveryLoop(new SolutionProviderA());
+        Connections connection = new Connections(host, port);
+        connection.deliveryLoop(new SolutionProviderA(connection));
+
     }
 
 
