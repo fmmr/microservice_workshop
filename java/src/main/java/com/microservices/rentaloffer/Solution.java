@@ -8,13 +8,15 @@ import com.google.gson.Gson;
 public class Solution {
 
     private String id;
+    private SolutionType type;
     private long value;
     private double likelyhood;
 
     public Solution() {
     }
 
-    public Solution(long value, double likelyhood) {
+    public Solution(SolutionType type, long value, double likelyhood) {
+        this.type = type;
         this.value = value;
         this.likelyhood = likelyhood;
         this.id = IDProvider.getId();
@@ -27,6 +29,7 @@ public class Solution {
         message.put("value", value);
         message.put("likelyhood", likelyhood);
         message.put("id", id);
+        message.put("type", type);
         return new Gson().toJson(message);
     }
 

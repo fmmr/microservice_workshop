@@ -18,7 +18,7 @@ public class NeedPacket {
     }
 
     public static final String NEED = "car_rental_offer";
-    private final List<Object> solutions = new ArrayList<>();
+    private final List<Solution> solutions = new ArrayList<>();
 
     public String toJson() {
         Map<String, Object> message = new HashMap<>();
@@ -34,11 +34,15 @@ public class NeedPacket {
         return new Gson().fromJson(json, NeedPacket.class);
     }
 
-    public void proposeSolution(Object solution) {
+    public void proposeSolution(Solution solution) {
         solutions.add(solution);
     }
 
     public boolean hasNoSolutions() {
         return solutions.size() == 0;
+    }
+
+    public List<Solution> getSolutions() {
+        return solutions;
     }
 }

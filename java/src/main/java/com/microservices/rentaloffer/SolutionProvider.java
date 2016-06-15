@@ -19,10 +19,14 @@ public class SolutionProvider implements MessageHandler {
     public void handle(String message) {
         final NeedPacket needPacket = NeedPacket.fromJson(message);
 
-        if (needPacket.hasNoSolutions()) {
-            needPacket.proposeSolution(new Solution(100, 0.5d));
+        if (hasNoSolutionOfTypeA(needPacket)) {
+            needPacket.proposeSolution(new Solution(SolutionType.A, 100, 0.5d));
             connection.publish(needPacket.toJson());
         }
+    }
+
+    private boolean hasNoSolutionOfTypeA(NeedPacket needPacket) {
+        return needPacket.hasNoSolutions();
     }
 
 }
