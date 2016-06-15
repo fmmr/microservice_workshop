@@ -3,6 +3,8 @@ package com.microservices.rentaloffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.microservices.rentaloffer.PacketUtil.isPingPacket;
+
 public class Membership implements MessageHandler {
 
     protected static Logger logger = LoggerFactory.getLogger(Membership.class);
@@ -17,23 +19,29 @@ public class Membership implements MessageHandler {
     }
 
     public void handle(String message) {
-        final NeedPacket needPacket = NeedPacket.fromJson(message);
+        if (isPingPacket(message)) {
+            final PingPacket pingPacket = PingPacket.fromJson(message);
+            pingPacket.increaseReadCount();
+            connection.publish(pingPacket.toJson(sign()));
+        } else {
+            final NeedPacket needPacket = NeedPacket.fromJson(message);
 
-        if (needPacket.getReadCount() > 9) {
-            logger.error("Message read more than 9 times: " + needPacket);
-            return;
-        }
-
-        if (shouldHandle(needPacket)) {
-            final String userid = needPacket.getUserid();
-            Level level = getLevelForUser(userid);
-            if (level != null) {
-                needPacket.setLevel(level);
-            } else {
-                needPacket.proposeSolution(new Solution(SolutionType.JOIN, 500, 0.3));
+            if (needPacket.getReadCount() > 9) {
+                logger.error("Message read more than 9 times: " + needPacket);
+                return;
             }
-            needPacket.increaseReadCount();
-            connection.publish(needPacket.toJson(sign()));
+
+            if (shouldHandle(needPacket)) {
+                final String userid = needPacket.getUserid();
+                Level level = getLevelForUser(userid);
+                if (level != null) {
+                    needPacket.setLevel(level);
+                } else {
+                    needPacket.proposeSolution(new Solution(SolutionType.JOIN, 500, 0.3));
+                }
+                needPacket.increaseReadCount();
+                connection.publish(needPacket.toJson(sign()));
+            }
         }
     }
 

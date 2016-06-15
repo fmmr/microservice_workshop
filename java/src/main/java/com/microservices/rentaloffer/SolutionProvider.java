@@ -5,6 +5,8 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.microservices.rentaloffer.PacketUtil.isPingPacket;
+
 public abstract class SolutionProvider implements MessageHandler {
 
     protected static Logger logger = LoggerFactory.getLogger(SolutionProvider.class);
@@ -17,16 +19,22 @@ public abstract class SolutionProvider implements MessageHandler {
 
     public void handle(String message) {
         final NeedPacket needPacket = NeedPacket.fromJson(message);
-        if (needPacket.getReadCount() > 9) {
-            logger.error("Need packet read more than 9 times: " + needPacket);
-            return;
-        }
+        if (isPingPacket(message)) {
+            final PingPacket pingPacket = PingPacket.fromJson(message);
+            pingPacket.increaseReadCount();
+            connection.publish(pingPacket.toJson(sign()));
+        } else {
+            if (needPacket.getReadCount() > 9) {
+                logger.error("Need packet read more than 9 times: " + needPacket);
+                return;
+            }
 
-        if (shouldProvideNewSolution(needPacket)) {
-            Optional<Level> level = Optional.ofNullable(needPacket.getLevel());
-            needPacket.proposeSolution(new Solution(getType(), getValue(level), getLikelyhood(level)));
-            needPacket.increaseReadCount();
-            connection.publish(needPacket.toJson(sign()));
+            if (shouldProvideNewSolution(needPacket)) {
+                Optional<Level> level = Optional.ofNullable(needPacket.getLevel());
+                needPacket.proposeSolution(new Solution(getType(), getValue(level), getLikelyhood(level)));
+                needPacket.increaseReadCount();
+                connection.publish(needPacket.toJson(sign()));
+            }
         }
     }
 
@@ -36,7 +44,7 @@ public abstract class SolutionProvider implements MessageHandler {
     }
 
     abstract SolutionType getType();
-    
+
     abstract double getLikelyhood(Optional<Level> level);
 
     abstract int getValue(Optional<Level> level);
