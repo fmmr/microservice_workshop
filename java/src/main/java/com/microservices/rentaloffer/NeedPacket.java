@@ -69,4 +69,8 @@ public class NeedPacket {
     public void setLevel(Level level) {
         this.level = level;
     }
+
+    public String getId() {
+        return id;
+    }
 }
