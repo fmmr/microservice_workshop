@@ -1,5 +1,7 @@
 package com.microservices.rentaloffer;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,6 +10,7 @@ import org.slf4j.LoggerFactory;
 public class SolutionCollector implements MessageHandler {
 
     protected static Logger logger = LoggerFactory.getLogger(SolutionCollector.class);
+    NumberFormat formatter = new DecimalFormat("#0.00");
 
     public static void main(String[] args) {
         String host = args[0];
@@ -23,7 +26,11 @@ public class SolutionCollector implements MessageHandler {
             List<Solution> solutions = needPacket.getSolutions();
             Solution solution = getBest(solutions);
             double score = solution.getValue() * solution.getLikelyhood();
-            logger.info("BEST of (" + solutions.size() + "), score: " + score + ": " + solution.toJson());
+
+
+            final String scoreInString = formatter.format(score);
+
+            logger.info("BEST of (" + solutions.size() + "), score: " + scoreInString + ": " + solution.toJson());
 
         }
     }
