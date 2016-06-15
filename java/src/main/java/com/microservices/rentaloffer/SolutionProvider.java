@@ -20,7 +20,7 @@ public abstract class SolutionProvider implements MessageHandler {
         final NeedPacket needPacket = NeedPacket.fromJson(message);
 
         if (shouldProvideNewSolution(needPacket)) {
-            Optional<Level> level = Optional.of(needPacket.getLevel());
+            Optional<Level> level = Optional.ofNullable(needPacket.getLevel());
             needPacket.proposeSolution(new Solution(getType(), getValue(level), getLikelyhood(level)));
             connection.publish(needPacket.toJson());
         }
