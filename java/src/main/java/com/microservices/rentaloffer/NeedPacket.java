@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 import com.google.gson.Gson;
 
 public class NeedPacket {
     private String id;
     private String userid;
+    private Level level;
 
     public NeedPacket() {
         id = IDProvider.getId();
@@ -26,6 +26,7 @@ public class NeedPacket {
         message.put("json_class", NeedPacket.class.getName());
         message.put("need", NEED);
         message.put("id", id);
+        message.put("level", level);
         message.put("userid", userid);
         message.put("solutions", solutions);
         return new Gson().toJson(message);
@@ -43,6 +44,7 @@ public class NeedPacket {
     public boolean hasNoSolutions() {
         return solutions.size() == 0;
     }
+
     public boolean hasSolutions() {
         return solutions.size() > 0;
     }
